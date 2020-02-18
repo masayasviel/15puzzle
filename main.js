@@ -37,7 +37,7 @@ phina.define("MainScene", {
             }
         }
         // ピースをシャッフル
-        for(let i = 0;i < 101;i++){
+        for(let i = 0;i < 100;i++){
             self.shufflePanels();  
         };
     },
@@ -63,17 +63,20 @@ phina.define("MainScene", {
     movePanel: function(panel, isInstantly=false){
         // 空白ピースを得る
         let blank = this.getBlank();
-        // 即入れ替え
-        if(isInstantly){
-            let tmpx = panel.x;
-            let tmpy = panel.y;
-            panel.setPosition(blank.x, blank.y);
-            blank.setPosition(tmpx, tmpy);
-            return;
-        }
         // x, yの座標差の絶対値
         let dx = Math.abs(panel.x - blank.x);
         let dy = Math.abs(panel.y - blank.y);
+        // 即入れ替え
+        if(isInstantly){
+            // 隣り合わせの判定
+            if((panel.x == blank.x && dy == GRID_SIZE) || (panel.y == blank.y && dx == GRID_SIZE)){
+                let tmpx = panel.x;
+                let tmpy = panel.y;
+                panel.setPosition(blank.x, blank.y);
+                blank.setPosition(tmpx, tmpy);
+            }
+            return;
+        }
         // thisを避難
         let self = this;
         // 隣り合わせの判定
@@ -99,7 +102,7 @@ phina.define("MainScene", {
         let res = null;
         this.panelGroup.children.some(e=>{
             // 指定した座標なら
-            if (e.x === x && e.y === y) {
+            if (e.x == x && e.y == y) {
                 res = e;
                 return true;
             }
@@ -133,7 +136,7 @@ phina.define("MainScene", {
 // パネルクラス
 phina.define("Panel", {
     superClass: "RectangleShape",
-    init: function (num){
+    init: function(num){
         // 親クラス初期化
         this.superInit({
             width: PANEL_SIZE,
