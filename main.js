@@ -68,13 +68,10 @@ phina.define("MainScene", {
         let dy = Math.abs(panel.y - blank.y);
         // 即入れ替え
         if(isInstantly){
-            // 隣り合わせの判定
-            if((panel.x == blank.x && dy == GRID_SIZE) || (panel.y == blank.y && dx == GRID_SIZE)){
-                let tmpx = panel.x;
-                let tmpy = panel.y;
-                panel.setPosition(blank.x, blank.y);
-                blank.setPosition(tmpx, tmpy);
-            }
+            let tmpx = panel.x;
+            let tmpy = panel.y;
+            panel.setPosition(blank.x, blank.y);
+            blank.setPosition(tmpx, tmpy);
             return;
         }
         // thisを避難
@@ -119,7 +116,7 @@ phina.define("MainScene", {
         // 上下左右隣りのパネルがあれば配列に追加
         [1, 0, -1].forEach(i=>{
             [1, 0, -1].forEach(j=>{
-                if(i != j){
+                if(Math.abs(i) != Math.abs(j)){
                     let x = blank.x + i * GRID_SIZE;
                     let y = blank.y + j * GRID_SIZE;
                     let target = self.getPanelByXY(x, y);
@@ -174,7 +171,7 @@ phina.define("ResultScene", {
     init: function(param){
         this.superInit(param);
         Label({
-            text: param.score + "点！　お前マジで偉い！",
+            text: param.score + "点！ お前マジで偉い！",
             fontSize: 50,
             fill: "white",
         }).addChildTo(this).setPosition(320, 240);
